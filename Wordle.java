@@ -2,26 +2,59 @@ public class Wordle {
 
     // Reads all words from dictionary filename into a String array.
     public static String[] readDictionary(String filename) {
-		// ...
+		In in1 = new In(filename);
+        int counter = 1;
+        while(!in1.isEmpty()){
+            in1.readString();
+            counter++;
+        }
+        In in2 = new In(filename);
+        String[] words = new String[counter];
+        int i = 0;
+        while (!in2.isEmpty()){
+            words[i] = in2.readString();
+            i++;
+        }
+        return words;
     }
 
     // Choose a random secret word from the dictionary. 
     // Hint: Pick a random index between 0 and dict.length (not including) using Math.random()
     public static String chooseSecretWord(String[] dict) {
-		// ...
+		String word;
+        word = dict[(int)(dict.length*Math.random())-1];
+        return word;
     }
 
     // Simple helper: check if letter c appears anywhere in secret (true), otherwise
     // return false.
     public static boolean containsChar(String secret, char c) {
-		// ...
+		for (int i=0; i<secret.length();i++){
+            if (secret.charAt(i)==c)
+                return true;
+        }
+        return false;
     }
 
     // Compute feedback for a single guess into resultRow.
     // G for exact match, Y if letter appears anywhere else, _ otherwise.
     public static void computeFeedback(String secret, String guess, char[] resultRow) {
-		// ...
-		// you may want to use containsChar in your implementation
+		char c;
+        char c2;
+        for (int i=0; i < secret.length(); i++){
+            c = guess.charAt(i);
+            if (containsChar(secret, c))
+                resultRow[i] = 'Y';
+            else
+                resultRow[i] = '_';
+        }
+        for (int i=0; i < secret.length(); i++){
+            c = guess.charAt(i);
+            c2 = secret.charAt(i);
+            if (c == c2)
+                resultRow[i] = 'G';
+        }
+        
     }
 
     // Store guess string (chars) into the given row of guesses 2D array.
